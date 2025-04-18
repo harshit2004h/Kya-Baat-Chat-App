@@ -23,14 +23,14 @@ Built with **Socket.IO**, **Redis**, and **Kafka** for fast, real-time, and reli
 ## 🛠️ Tech Stack
 
 | Layer        | Technology                        |
-|--------------|------------------------------------|
+|--------------|-----------------------------------|
 | Frontend     | Next.js, Tailwind CSS, TypeScript |
 | Backend      | Node.js, Express.js               |
 | Real-time    | Socket.IO                         |
 | In-memory DB | Redis                             |
 | Queue System | Apache Kafka                      |
 | Database     | PostgreSQL / MongoDB              |
-| Auth         | JWT / OAuth                       |
+| Auth         | JWT, OAuth                        |
 
 ---
 
