@@ -92,11 +92,11 @@ export default function HeroSection() {
                 transition={{ duration: 0.2 }}
               >
                 <Image
-                  src="/conversation.png" 
+                  src="/images/conversation.svg" 
                   alt="Kya Baat Chat Preview"
                   width={800}
                   height={500}
-                  className="rounded-xl"
+                  className="rounded-xl"  
                   priority
                 />
               </motion.div>

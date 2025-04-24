@@ -10,7 +10,7 @@ const reviews = [
     id: 1,
     name: "Rahul Verma",
     role: "Software Developer",
-    avatar: "/user1.png",
+    avatar: "/images/user1.png",
     rating: 5,
     review: "Kya Baat has completely changed how our team communicates. The interface is intuitive and the desi touch makes it feel so unique!"
   },
@@ -18,7 +18,7 @@ const reviews = [
     id: 2,
     name: "Vikram Singh",
     role: "Marketing Manager",
-    avatar: "/user2.png",
+    avatar: "/images/user2.png",
     rating: 5,
     review: "I love the traditional theme combined with modern functionality. It's perfect for staying connected with my family across different cities."
   },
@@ -26,7 +26,7 @@ const reviews = [
     id: 3,
     name: "Ajay Kumar",
     role: "Student",
-    avatar: "/user1.png",
+    avatar: "/images/user2.png",
     rating: 4,
     review: "Using Kya Baat for our college projects has been so much fun. The passcode feature ensures only our team can access our conversations."
   },
@@ -34,7 +34,7 @@ const reviews = [
     id: 4,
     name: "Nitin Patel",
     role: "Business Owner",
-    avatar: "/user2.png",
+    avatar: "/images/user1.png",
     rating: 5,
     review: "As someone who values both tradition and innovation, this app speaks to me. The design is beautiful and the performance is top-notch."
   }
