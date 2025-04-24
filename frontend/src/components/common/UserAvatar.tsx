@@ -1,23 +1,22 @@
 import React from "react";
-import Image from "next/image";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const UserAvatar = ({ name, image }: { name: string; image?: string }) => {
+  // Get first letter of name for fallback
+  const getFirstLetter = (name: string) => {
+    return name.charAt(0).toUpperCase();
+  };
+
   return (
-    <Avatar className="h-10 w-10 rounded-full focus:outline-none focus:ring-0">
-      {image ? (
-        <div>
-          <Image
-            src={image}
-            alt={name || "User Avatar"}
-            height={40}
-            width={40}
-            className="select-none"
-          />
-        </div>
-      ) : (
-        <AvatarFallback>{name ? name[0] : "U"}</AvatarFallback>
-      )}
+    <Avatar className="border-2 border-[#c2451e]/30 bg-white h-9 w-9">
+      <AvatarImage
+        src={image || ""}
+        alt={name}
+        className="object-cover"
+      />
+      <AvatarFallback className="bg-[#fff0d6] text-[#c2451e] font-bold">
+        {getFirstLetter(name)}
+      </AvatarFallback>
     </Avatar>
   );
 };

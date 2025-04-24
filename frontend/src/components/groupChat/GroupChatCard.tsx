@@ -14,7 +14,8 @@ export default function GroupChatCard({
 }) {
   const [showPasscode, setShowPasscode] = useState(false);
   
-  const togglePasscodeVisibility = () => {
+  const togglePasscodeVisibility = (e: React.MouseEvent) => {
+    e.stopPropagation();
     setShowPasscode(!showPasscode);
   };
 
@@ -27,7 +28,9 @@ export default function GroupChatCard({
         <CardTitle className="text-xl font-bold text-[#3d1f00]">
           {group.title}
         </CardTitle>
-        <GroupChatCardMenu user={user} group={group} />
+        <div onClick={e => e.stopPropagation()}>
+          <GroupChatCardMenu user={user} group={group} />
+        </div>
       </CardHeader>
       <CardContent className="text-[#804000] space-y-2 text-sm pt-0">
         <p className="flex items-center">

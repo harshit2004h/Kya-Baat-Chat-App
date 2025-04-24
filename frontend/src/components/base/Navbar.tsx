@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { CustomUser } from "@/app/api/auth/[...nextauth]/options";
 import { scrollToSection } from "@/utils/scrollUtils";
+import LoginModel from "../auth/LoginModel";
 
 export default function Navbar({ user }: { user?: CustomUser }) {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -22,14 +23,17 @@ export default function Navbar({ user }: { user?: CustomUser }) {
     };
   }, []);
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    sectionId: string
+  ) => {
     e.preventDefault();
     scrollToSection(sectionId);
     if (isMenuOpen) setIsMenuOpen(false);
   };
 
   return (
-    <nav 
+    <nav
       className={`sticky top-0 z-50 transition-all duration-300 ${
         isScrolled ? "bg-white/95 shadow-md" : "bg-transparent"
       }`}
@@ -37,7 +41,7 @@ export default function Navbar({ user }: { user?: CustomUser }) {
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.3 }}
@@ -45,11 +49,11 @@ export default function Navbar({ user }: { user?: CustomUser }) {
           >
             <Link href="/" className="flex items-center">
               <div className="relative">
-                <Image 
-                  src="/Logo.png" 
-                  width={50} 
-                  height={40} 
-                  alt="Kya Baat Logo" 
+                <Image
+                  src="/Logo.png"
+                  width={50}
+                  height={40}
+                  alt="Kya Baat Logo"
                   className="transition-transform hover:scale-105"
                 />
                 <div className="absolute -bottom-1 -right-1 w-2 h-2 bg-[#c2451e] rounded-full opacity-75 animate-pulse"></div>
@@ -62,17 +66,35 @@ export default function Navbar({ user }: { user?: CustomUser }) {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <motion.div 
+            <motion.div
               className="flex space-x-6 text-[#3d1f00]"
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.1 }}
             >
-              <a href="#features" onClick={(e) => handleNavClick(e, "features")} className="hover:text-[#c2451e] transition-colors">Features</a>
-              <a href="#testimonials" onClick={(e) => handleNavClick(e, "testimonials")} className="hover:text-[#c2451e] transition-colors">Testimonials</a>
-              <a href="#about" onClick={(e) => handleNavClick(e, "about")} className="hover:text-[#c2451e] transition-colors">About</a>
+              <a
+                href="#features"
+                onClick={(e) => handleNavClick(e, "features")}
+                className="hover:text-[#c2451e] transition-colors"
+              >
+                Features
+              </a>
+              <a
+                href="#testimonials"
+                onClick={(e) => handleNavClick(e, "testimonials")}
+                className="hover:text-[#c2451e] transition-colors"
+              >
+                Testimonials
+              </a>
+              <a
+                href="#about"
+                onClick={(e) => handleNavClick(e, "about")}
+                className="hover:text-[#c2451e] transition-colors"
+              >
+                About
+              </a>
             </motion.div>
-            
+
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -86,16 +108,13 @@ export default function Navbar({ user }: { user?: CustomUser }) {
                 </Link>
               ) : (
                 <div className="flex space-x-4">
-                  <Link href="/login">
-                    <Button variant="outline" className="border-[#c2451e] text-[#c2451e] hover:bg-[#c2451e]/10">
-                      Sign In
-                    </Button>
-                  </Link>
-                  <Link href="/register">
-                    <Button className="bg-gradient-to-r from-[#c2451e] to-[#a73a18] text-white hover:from-[#a73a18] hover:to-[#c2451e]">
-                      Sign Up
-                    </Button>
-                  </Link>
+                  {!user ? (
+                    <LoginModel />
+                  ) : (
+                    <Link href="/dashboard">
+                      <Button>Dashboard</Button>
+                    </Link>
+                  )}
                 </div>
               )}
             </motion.div>
@@ -108,12 +127,32 @@ export default function Navbar({ user }: { user?: CustomUser }) {
               className="inline-flex items-center justify-center p-2 rounded-md text-[#3d1f00]"
             >
               {isMenuOpen ? (
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               ) : (
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
+                <svg
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16m-7 6h7"
+                  />
                 </svg>
               )}
             </button>
@@ -124,7 +163,7 @@ export default function Navbar({ user }: { user?: CustomUser }) {
       {/* Mobile Navigation */}
       <AnimatePresence>
         {isMenuOpen && (
-          <motion.div 
+          <motion.div
             className="md:hidden bg-white/95 shadow-lg"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
@@ -132,16 +171,28 @@ export default function Navbar({ user }: { user?: CustomUser }) {
             transition={{ duration: 0.2 }}
           >
             <div className="px-4 py-3 space-y-2">
-              <a href="#features" onClick={(e) => handleNavClick(e, "features")} className="block px-3 py-2 text-[#3d1f00] hover:bg-[#c2451e]/10 rounded-md">
+              <a
+                href="#features"
+                onClick={(e) => handleNavClick(e, "features")}
+                className="block px-3 py-2 text-[#3d1f00] hover:bg-[#c2451e]/10 rounded-md"
+              >
                 Features
               </a>
-              <a href="#testimonials" onClick={(e) => handleNavClick(e, "testimonials")} className="block px-3 py-2 text-[#3d1f00] hover:bg-[#c2451e]/10 rounded-md">
+              <a
+                href="#testimonials"
+                onClick={(e) => handleNavClick(e, "testimonials")}
+                className="block px-3 py-2 text-[#3d1f00] hover:bg-[#c2451e]/10 rounded-md"
+              >
                 Testimonials
               </a>
-              <a href="#about" onClick={(e) => handleNavClick(e, "about")} className="block px-3 py-2 text-[#3d1f00] hover:bg-[#c2451e]/10 rounded-md">
+              <a
+                href="#about"
+                onClick={(e) => handleNavClick(e, "about")}
+                className="block px-3 py-2 text-[#3d1f00] hover:bg-[#c2451e]/10 rounded-md"
+              >
                 About
               </a>
-              
+
               {user ? (
                 <div className="px-3 py-2">
                   <Link href="/dashboard" className="block w-full">
@@ -153,7 +204,10 @@ export default function Navbar({ user }: { user?: CustomUser }) {
               ) : (
                 <div className="flex flex-col space-y-2 p-3">
                   <Link href="/login" className="w-full">
-                    <Button variant="outline" className="border-[#c2451e] text-[#c2451e] hover:bg-[#c2451e]/10 w-full">
+                    <Button
+                      variant="outline"
+                      className="border-[#c2451e] text-[#c2451e] hover:bg-[#c2451e]/10 w-full"
+                    >
                       Sign In
                     </Button>
                   </Link>

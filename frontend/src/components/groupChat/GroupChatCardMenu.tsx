@@ -1,5 +1,5 @@
 "use client";
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useState, useEffect, useRef } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,10 +24,37 @@ export default function GroupChatCardMenu({
 }) {
   const [deleteDialog, setDeleteDialog] = useState(false);
   const [editDialog, setEditDialog] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
-  const handleCopy = () => {
+  // Reset states when group changes to prevent stale handlers
+  useEffect(() => {
+    setDeleteDialog(false);
+    setEditDialog(false);
+    setIsOpen(false);
+  }, [group.id]);
+
+  const handleCopy = (e: React.MouseEvent) => {
+    e.stopPropagation();
     navigator.clipboard?.writeText(`${Env.APP_URL}/chat/${group.id}`);
     toast.success("Link copied successfully!");
+    setIsOpen(false);
+  };
+
+  const handleEdit = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setEditDialog(true);
+    setIsOpen(false);
+  };
+
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setDeleteDialog(true);
+    setIsOpen(false);
+  };
+
+  const handleTriggerClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
   };
 
   return (
@@ -53,11 +80,13 @@ export default function GroupChatCardMenu({
         </Suspense>
       )}
 
-      <DropdownMenu>
+      <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
         <DropdownMenuTrigger asChild>
           <button
+            ref={triggerRef}
             className="p-1 rounded-md hover:bg-[#c2451e]/10 transition duration-150"
             aria-label="Options"
+            onClick={handleTriggerClick}
           >
             <DotsVerticalIcon className="h-5 w-5 text-[#a73a18]" />
           </button>
@@ -70,13 +99,13 @@ export default function GroupChatCardMenu({
             Copy Link
           </DropdownMenuItem>
           <DropdownMenuItem 
-            onClick={() => setEditDialog(true)}
+            onClick={handleEdit}
             className="text-[#3d1f00] hover:bg-[#c2451e]/5 focus:bg-[#c2451e]/10 cursor-pointer transition duration-150"
           >
             Edit
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={() => setDeleteDialog(true)}
+            onClick={handleDelete}
             className="text-[#a73a18] hover:bg-[#a73a18]/5 focus:bg-[#a73a18]/10 cursor-pointer transition duration-150"
           >
             Delete

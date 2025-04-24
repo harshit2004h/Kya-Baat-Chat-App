@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useState, useEffect } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -27,6 +27,11 @@ export default function DeleteChatGroup({
   token: string;
 }) {
   const [loading, setLoading] = useState(false);
+  
+  // Reset loading state when dialog opens/closes
+  useEffect(() => {
+    if (!open) setLoading(false);
+  }, [open]);
 
   const deleteChatGroup = async () => {
     setLoading(true);
@@ -38,19 +43,28 @@ export default function DeleteChatGroup({
       });
 
       if (data?.message) {
-        clearCache("dashboard");
+        await clearCache("dashboard");
         toast.success(data.message);
-        setOpen(false);
+        
+        // Close the dialog with a slight delay to ensure cleanup
+        setTimeout(() => {
+          setOpen(false);
+        }, 100);
       }
     } catch (error) {
       toast.error("Something went wrong. Please try again later.");
-    } finally {
       setLoading(false);
     }
   };
 
+  const handleCancel = () => {
+    if (!loading) {
+      setOpen(false);
+    }
+  };
+
   return (
-    <AlertDialog open={open} onOpenChange={setOpen}>
+    <AlertDialog open={open} onOpenChange={loading ? undefined : setOpen}>
       <AlertDialogContent className="bg-white/95 rounded-xl p-6 shadow-lg border border-[#a73a18]/20 max-w-md animate-in fade-in-50 zoom-in-95 duration-200">
         <div className="h-1 absolute top-0 left-0 right-0 bg-gradient-to-r from-[#a73a18] to-[#c2451e] rounded-t-xl opacity-80"></div>
         
@@ -65,7 +79,11 @@ export default function DeleteChatGroup({
         </AlertDialogHeader>
         
         <AlertDialogFooter className="mt-6 gap-2">
-          <AlertDialogCancel className="bg-transparent border border-[#c2451e]/20 text-[#3d1f00] hover:bg-[#c2451e]/5 transition duration-150">
+          <AlertDialogCancel 
+            onClick={handleCancel}
+            className="bg-transparent border border-[#c2451e]/20 text-[#3d1f00] hover:bg-[#c2451e]/5 transition duration-150"
+            disabled={loading}
+          >
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction
