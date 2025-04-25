@@ -1,41 +1,37 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import ChatSidebar from "./ChatSidebar";
-import ChatNav from "./ChatNav";
-import ChatUserDialog from "./ChatUserDialog";
-import Chats from "./Chats";
+import { getSocket } from "@/lib/socket.config";
+import React, { useEffect, useMemo } from "react";
+import { v4 as uuidV4 } from "uuid";
+import { Button } from "../ui/button";
 
-const ChatBase = ({
-  group,
-  users,
-  oldMessages,
-}: {
-  group: ChatGroupType;
-  users: Array<GroupChatUserType>;
-  oldMessages: Array<MessageType> | [];
-}) => {
-  const [open, setOpen] = useState(true);
-  const [chatUser, setChatUser] = useState<GroupChatUserType>();
-  useEffect(() => {
-    const data = localStorage.getItem(group.id);
-
-    if (data) {
-      const parsedData = JSON.parse(data);
-      setChatUser(parsedData);
+const ChatBase = ({ groupId }: { groupId: string }) => {
+  const socket = useMemo(() => {
+    const socket = getSocket();
+    socket.auth={
+      room: groupId,
     }
-  }, [group.id]);
+
+    return socket.connect();
+  }, []);
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    socket.on("message", (data: any) => {
+      console.log("The socket message is- ", data);
+    });
+
+    return () => {
+      socket.close();
+    };
+  }, []);
+
+  const handleClick = () => {
+    socket.emit("message", { name: "Harshit", id: uuidV4() });
+  };
 
   return (
-    <div className="flex">
-      <ChatSidebar users={users} />
-      <div className="w-full md:w-4/5 bg-gradient-to-b from-gray-50 to-white">
-        {open ? (
-          <ChatUserDialog open={open} setOpen={setOpen} group={group} />
-        ) : (
-          <ChatNav chatGroup={group} users={users} />
-        )}
-      </div>
-      <Chats group={group} chatUser={chatUser} oldMessages={oldMessages} />
+    <div>
+      <Button onClick={handleClick}>Send Message</Button>
     </div>
   );
 };
