@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import prisma from "../config/db.config.js";
+
 class ChatGroupController {
   static async index(req: Request, res: Response) {
     try {
-      const body = req.body;
       const user = req.user;
       const groups = await prisma.chatGroup.findMany({
         where: {
@@ -13,38 +13,31 @@ class ChatGroupController {
           createdAt: "desc",
         },
       });
-
-      return res.json({
-        message: "Chat group fetched successfully",
-        data: groups,
-      });
+      return res.json({ data: groups });
     } catch (error) {
-      return res.status(500).json({
-        message: "Something went wrong",
-        error: error.message,
-      });
+      return res
+        .status(500)
+        .json({ message: "Something went wrong.please try again!" });
     }
   }
 
   static async show(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const user = req.user;
-      const groups = await prisma.chatGroup.findUnique({
-        where: {
-          id: id,
-        },
-      });
+      if (id) {
+        const group = await prisma.chatGroup.findUnique({
+          where: {
+            id: id,
+          },
+        });
+        return res.json({ data: group });
+      }
 
-      return res.json({
-        message: "Chat group fetched successfully",
-        data: groups,
-      });
+      return res.status(404).json({ message: "No groups found" });
     } catch (error) {
-      return res.status(500).json({
-        message: "Something went wrong",
-        error: error.message,
-      });
+      return res
+        .status(500)
+        .json({ message: "Something went wrong.please try again!" });
     }
   }
 
@@ -54,45 +47,39 @@ class ChatGroupController {
       const user = req.user;
       await prisma.chatGroup.create({
         data: {
-          title: body.title,
-          passcode: body.passcode,
+          title: body?.title,
+          passcode: body?.passcode,
           user_id: user.id,
         },
       });
 
-      return res.json({
-        message: "Chat group created successfully",
-      });
+      return res.json({ message: "Chat Group created successfully!" });
     } catch (error) {
-      return res.status(500).json({
-        message: "Something went wrong",
-        error: error.message,
-      });
+      return res
+        .status(500)
+        .json({ message: "Something went wrong.please try again!" });
     }
   }
 
   static async update(req: Request, res: Response) {
     try {
-      const body = req.body;
       const { id } = req.params;
-      await prisma.chatGroup.update({
-        data: {
-          title: body.title,
-          passcode: body.passcode,
-        },
-        where: {
-          id: id,
-        },
-      });
+      const body = req.body;
+      if (id) {
+        await prisma.chatGroup.update({
+          data: body,
+          where: {
+            id: id,
+          },
+        });
+        return res.json({ message: "Group updated successfully!" });
+      }
 
-      return res.json({
-        message: "Chat group updated successfully",
-      });
+      return res.status(404).json({ message: "No groups found" });
     } catch (error) {
-      return res.status(500).json({
-        message: "Something went wrong",
-        error: error.message,
-      });
+      return res
+        .status(500)
+        .json({ message: "Something went wrong.please try again!" });
     }
   }
 
@@ -104,15 +91,11 @@ class ChatGroupController {
           id: id,
         },
       });
-
-      return res.json({
-        message: "Chat group deleted successfully",
-      });
+      return res.json({ message: "Chat Deleted successfully!" });
     } catch (error) {
-      return res.status(500).json({
-        message: "Something went wrong",
-        error: error.message,
-      });
+      return res
+        .status(500)
+        .json({ message: "Something went wrong.please try again!" });
     }
   }
 }
