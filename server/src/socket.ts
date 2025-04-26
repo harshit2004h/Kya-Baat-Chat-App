@@ -1,5 +1,6 @@
 import { Server, Socket } from "socket.io";
 import prisma from "./config/db.config.js";
+import { produceMessage } from "./helper.kafka.js";
 
 interface CustomSocket extends Socket {
   room?: string;
@@ -23,9 +24,7 @@ export function setupSocket(io: Server) {
     socket.on("message", async (data) => {
       console.log("The socket message is- ", data);
       // socket.broadcast.emit("message", data);
-      await prisma.chats.create({
-        data: data,
-      });
+      await produceMessage(process.env.KAFKA_TOPIC, data);
 
       socket.to(socket.room).emit("message", data);
     });

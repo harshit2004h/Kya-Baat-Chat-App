@@ -10,6 +10,13 @@ import { setupSocket } from "./socket.js";
 import { createAdapter } from "@socket.io/redis-streams-adapter";
 import redis from "./config/redis.config.js";
 import { instrument } from "@socket.io/admin-ui";
+import {
+  connectKafkaProducer,
+  connectKafkaConsumer,
+  producer,
+  consumer,
+} from "./config/kafka.config.js";
+import { consumeMessages } from "./helper.kafka.js";
 
 const server = createServer(app);
 const io = new Server(server, {
@@ -40,4 +47,54 @@ app.get("/", (req: Request, res: Response) => {
 //Routes
 app.use("/api", Routes);
 
-server.listen(PORT, () => console.log(`Server is running on PORT ${PORT}`));
+// Initialize Kafka connections
+const initializeKafka = async () => {
+  try {
+    await connectKafkaProducer();
+    await connectKafkaConsumer();
+
+    const kafkaTopic = process.env.KAFKA_TOPIC;
+    if (!kafkaTopic) {
+      throw new Error("KAFKA_TOPIC environment variable is not defined");
+    }
+
+    await consumeMessages(kafkaTopic);
+    console.log(
+      `Successfully connected to Kafka and consuming from topic: ${kafkaTopic}`
+    );
+  } catch (error) {
+    console.error("Failed to initialize Kafka:", error);
+    console.error("Application will continue without Kafka functionality");
+  }
+};
+
+// Start the server
+server.listen(PORT, async () => {
+  console.log(`Server is running on PORT ${PORT}`);
+  await initializeKafka();
+});
+
+// Handle graceful shutdown
+const gracefulShutdown = async () => {
+  try {
+    console.log("Shutting down gracefully...");
+    await io.close();
+    await redis.quit();
+    try {
+      await producer.disconnect();
+    } catch (e) {}
+    try {
+      await consumer.disconnect();
+    } catch (e) {}
+    server.close(() => {
+      console.log("Server closed");
+      process.exit(0);
+    });
+  } catch (error) {
+    console.error("Error during shutdown:", error);
+    process.exit(1);
+  }
+};
+
+process.on("SIGTERM", gracefulShutdown);
+process.on("SIGINT", gracefulShutdown);
