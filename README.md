@@ -1,6 +1,6 @@
-# 💬 Kya Baat
+# 💬 Kya Baat - Quick Chat App
 
-**Kya Baat** is a modern, formal, and secure real-time chat application designed for meaningful communication—whether in teams, communities, or professional spaces.
+**Kya Baat** is a modern, formal, and secure real-time quick chat application designed for meaningful communication—whether in teams, communities, or professional spaces.
 
 Built with **Socket.IO**, **Redis**, and **Kafka** for fast, real-time, and reliable messaging at scale.
 
@@ -12,10 +12,7 @@ Built with **Socket.IO**, **Redis**, and **Kafka** for fast, real-time, and reli
 - ⚡ **In-memory data caching** using Redis
 - 📡 **Reliable message delivery** via Kafka
 - 🧑‍🤝‍🧑 One-to-one & Group Chats
-- 🟢 Online status and typing indicators
 - ✅ Message delivered/read receipts
-- 🗂️ Media & file sharing
-- 🌓 Light & Dark theme support
 - 🌐 Scalable microservice-friendly backend
 
 ---
@@ -28,9 +25,9 @@ Built with **Socket.IO**, **Redis**, and **Kafka** for fast, real-time, and reli
 | Backend      | Node.js, Express.js               |
 | Real-time    | Socket.IO                         |
 | In-memory DB | Redis                             |
-| Queue System | Apache Kafka                      |
-| Database     | PostgreSQL / MongoDB              |
-| Auth         | JWT, OAuth                        |
+| Queue System | Apache Kafka - Red Panda          |
+| Database     | PostgreSQL                        |
+| Auth         | JWT, Auth.js                      |
 
 ---
 
