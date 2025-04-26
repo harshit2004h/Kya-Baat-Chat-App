@@ -1,39 +1,24 @@
 "use client";
-import { getSocket } from "@/lib/socket.config";
-import React, { useEffect, useMemo } from "react";
-import { v4 as uuidV4 } from "uuid";
-import { Button } from "../ui/button";
+import React from "react";
+import ChatSidebar from "./ChatSidebar";
+import ChatNav from "./ChatNav";
 
-const ChatBase = ({ groupId }: { groupId: string }) => {
-  const socket = useMemo(() => {
-    const socket = getSocket();
-    socket.auth={
-      room: groupId,
-    }
-
-    return socket.connect();
-  }, []);
-
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    socket.on("message", (data: any) => {
-      console.log("The socket message is- ", data);
-    });
-
-    return () => {
-      socket.close();
-    };
-  }, []);
-
-  const handleClick = () => {
-    socket.emit("message", { name: "Harshit", id: uuidV4() });
-  };
-
+const ChatBase = ({
+  group,
+  users,
+}: {
+  group: ChatGroupType;
+  users: Array<GroupChatUserType> | [];
+}) => {
   return (
-    <div>
-      <Button onClick={handleClick}>Send Message</Button>
+    <div className="flex">
+      <ChatSidebar users={users} />
+      <div className="w-full md:w-4/5 bg-gradient-to-b from-gray-50 to-white">
+        <ChatNav chatGroup={group} users={users}/>
+      </div>
     </div>
   );
 };
 
 export default ChatBase;
+  
