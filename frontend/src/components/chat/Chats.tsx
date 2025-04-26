@@ -66,10 +66,11 @@ export default function Chats({
   };
 
   return (
-    <div className="flex flex-col h-[94vh] p-4">
-      <div className="flex-1 overflow-y-auto flex flex-col-reverse">
+    <div className="flex flex-col h-[calc(100%-70px)] relative">
+      {/* Fixed height message container with bottom padding for input box */}
+      <div className="h-[calc(100vh-80px)] overflow-y-scroll flex flex-col-reverse bg-[#fff8e8]/50 px-4 pt-4 pb-2 z-0">
         <div ref={messagesEndRef} />
-        <div className="flex flex-col gap-3 mb-2 px-1">
+        <div className="flex flex-col gap-3 mb-2">
           {messages.map((message) => (
             <div
               key={message.id}
@@ -80,23 +81,23 @@ export default function Chats({
               }`}
             >
               {message.name !== chatUser?.name && (
-                <span className="text-xs text-gray-600 ml-2 mb-1">
+                <span className="text-xs text-[#804000] ml-2 mb-1 font-medium">
                   {message.name}
                 </span>
               )}
               <div
                 className={`relative px-3 py-2 rounded-lg ${
                   message.name === chatUser?.name
-                    ? "bg-[#dcf8c6] text-black rounded-tr-none shadow-sm relative after:absolute after:content-[''] after:top-0 after:-right-2 after:w-0 after:h-0 after:border-t-8 after:border-l-8 after:border-t-[#dcf8c6] after:border-l-[#dcf8c6] after:border-t-solid after:border-r-transparent after:border-r-8"
-                    : "bg-white text-black rounded-tl-none shadow-sm relative after:absolute after:content-[''] after:top-0 after:-left-2 after:w-0 after:h-0 after:border-t-8 after:border-r-8 after:border-t-white after:border-r-white after:border-t-solid after:border-l-transparent after:border-l-8"
+                    ? "bg-gradient-to-r from-[#c2451e]/10 to-[#a73a18]/10 text-[#3d1f00] rounded-tr-none shadow-sm relative after:absolute after:content-[''] after:top-0 after:-right-2 after:w-0 after:h-0 after:border-t-8 after:border-l-8 after:border-t-[#c2451e]/10 after:border-l-[#c2451e]/10 after:border-t-solid after:border-r-transparent after:border-r-8"
+                    : "bg-white text-[#3d1f00] rounded-tl-none shadow-sm relative after:absolute after:content-[''] after:top-0 after:-left-2 after:w-0 after:h-0 after:border-t-8 after:border-r-8 after:border-t-white after:border-r-white after:border-t-solid after:border-l-transparent after:border-l-8"
                 }`}
               >
                 <p className="text-sm break-words pr-8">{message.message}</p>
-                <div className="text-[9px] text-gray-500 pt-0.5 pr-1 flex items-center justify-end space-x-1">
+                <div className="text-[9px] text-[#804000]/70 pt-0.5 pr-1 flex items-center justify-end space-x-1">
                   {formatTime(message.createdAt)}
                   {message.name === chatUser?.name && (
                     <svg
-                      className="w-3 h-3 text-blue-500"
+                      className="w-3 h-3 text-[#a73a18]"
                       viewBox="0 0 16 15"
                       fill="currentColor"
                     >
@@ -108,13 +109,29 @@ export default function Chats({
               </div>
             </div>
           ))}
+
+          {messages.length === 0 && (
+            <div className="flex flex-col items-center justify-center h-64 py-8 bg-white/50 rounded-xl border border-[#c2451e]/10">
+              <div className="w-16 h-16 rounded-full bg-[#c2451e]/10 flex items-center justify-center mb-4">
+                <span className="text-[#c2451e] text-2xl">✉</span>
+              </div>
+              <h3 className="text-lg font-bold text-[#3d1f00] mb-1">
+                Start a conversation
+              </h3>
+              <p className="text-[#804000] text-center text-sm">
+                Be the first to start a conversation in this chat group
+              </p>
+            </div>
+          )}
         </div>
       </div>
-      <div className="border-t bg-[#f0f2f5] pt-2 pb-1 px-2 rounded-lg">
+
+      {/* Input box with fixed height and position */}
+      <div className="fixed mt-2 h-[80px] w-full bottom-0 left-0 right-0 border-t border-[#c2451e]/30 bg-white py-3 px-4 shadow-md z-10">
         <form onSubmit={handleSubmit} className="flex items-center gap-2">
           <button
             type="button"
-            className="text-gray-500 p-2 rounded-full hover:bg-gray-200"
+            className="text-[#804000] p-2 rounded-full hover:bg-[#c2451e]/10 transition-colors"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -133,7 +150,7 @@ export default function Chats({
           </button>
           <button
             type="button"
-            className="text-gray-500 p-2 rounded-full hover:bg-gray-200"
+            className="text-[#804000] p-2 rounded-full hover:bg-[#c2451e]/10 transition-colors"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -154,14 +171,16 @@ export default function Chats({
             type="text"
             placeholder="Type a message..."
             value={message}
-            className="flex-1 p-3 rounded-full border-none outline-none bg-white shadow-inner"
+            className="flex-1 p-3 rounded-full border-2 border-[#c2451e]/40 outline-none bg-white shadow-md text-[#3d1f00] placeholder:text-[#804000]/70 focus:ring-2 focus:ring-[#c2451e]/50"
             onChange={(e) => setMessage(e.target.value)}
           />
           <button
             type="submit"
             disabled={!message.trim()}
-            className={`text-white p-3 rounded-full transition-all ${
-              message.trim() ? "bg-[#00a884] hover:bg-[#008f72]" : "bg-gray-300"
+            className={`text-white p-3 rounded-full shadow-md transition-all ${
+              message.trim()
+                ? "bg-[#c2451e] hover:bg-[#a73a18]"
+                : "bg-gray-300"
             }`}
           >
             {message.trim() ? (

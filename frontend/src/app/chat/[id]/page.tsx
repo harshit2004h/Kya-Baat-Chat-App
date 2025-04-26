@@ -20,10 +20,10 @@ const Chat = async ({ params }: { params: { id: string } }) => {
   const chats: Array<MessageType> | [] = await fetchChats(params.id);
 
   return (
-    <div>
+    <div className="bg-[#fff0d6] absolute inset-0 m-0 p-0 overflow-hidden">
       <ChatBase group={group} users={users} oldMessages={chats} />
     </div>
   );
 };
 
-export default Chat;  
+export default Chat;

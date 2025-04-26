@@ -9,21 +9,16 @@ const DashNav = ({ name, image }: { name: string; image?: string }) => {
       <div className="h-1 w-full bg-gradient-to-r from-[#c2451e] to-[#a73a18] opacity-80"></div>
       
       <div className="max-w-7xl mx-auto px-4 flex justify-between items-center py-3">
-        <h1 className="text-xl md:text-2xl font-extrabold flex items-center text-[#3d1f00]">
-          <div className="relative mr-2">
-            <Image 
-              src={"/Logo.png"} 
-              alt="Logo" 
-              width={60} 
-              height={50} 
-              className="transition-transform hover:scale-105"
-            />
-            <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-[#c2451e] rounded-full opacity-75 animate-pulse"></div>
-          </div>
-          <span className="bg-gradient-to-r from-[#3d1f00] to-[#804000] inline-block text-transparent bg-clip-text">
-            Kya Baat
-          </span>
-        </h1>
+        <div className="relative">
+          <Image 
+            src={"/Logo.png"} 
+            alt="Logo" 
+            width={60} 
+            height={50} 
+            className="transition-transform hover:scale-105"
+          />
+          <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-[#c2451e] rounded-full opacity-75 animate-pulse"></div>
+        </div>
         
         <div className="flex items-center space-x-2 md:space-x-6 text-[#3d1f00]">
           <div className="hidden md:flex items-center space-x-1">
