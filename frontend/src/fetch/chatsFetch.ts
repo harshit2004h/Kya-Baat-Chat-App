@@ -1,12 +1,11 @@
 import { CHATS_URL } from "@/lib/apiEndPoint";
 
-export async function fetchChats(groupId: string) {
-  const res = await fetch(`${CHATS_URL}/${groupId}`, {
+export async function fetchChats(group_id: string) {
+  const res = await fetch(`${CHATS_URL}/${group_id}`, {
     cache: "no-cache",
   });
 
   if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
     throw new Error("Failed to fetch data");
   }
   const response = await res.json();

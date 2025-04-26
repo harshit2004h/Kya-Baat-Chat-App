@@ -1,17 +1,30 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ChatSidebar from "./ChatSidebar";
 import ChatNav from "./ChatNav";
 import ChatUserDialog from "./ChatUserDialog";
+import Chats from "./Chats";
 
 const ChatBase = ({
   group,
   users,
+  oldMessages,
 }: {
   group: ChatGroupType;
   users: Array<GroupChatUserType> | [];
+  oldMessages: Array<MessageType> | [];
 }) => {
   const [open, setOpen] = useState(true);
+  const [chatUser, setChatUser] = useState<GroupChatUserType>();
+
+  useEffect(() => {
+    const data = localStorage.getItem(group.id as string);
+
+    if (data) {
+      const jsonData = JSON.parse(data);
+      setChatUser(jsonData);
+    }
+  }, [group.id]);
 
   return (
     <div className="flex">
@@ -22,6 +35,8 @@ const ChatBase = ({
         ) : (
           <ChatNav chatGroup={group} users={users} />
         )}
+
+        <Chats group={group} chatUser={chatUser} oldMessages={oldMessages} />
       </div>
     </div>
   );
