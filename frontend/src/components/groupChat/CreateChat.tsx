@@ -20,6 +20,7 @@ import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
 import { CHAT_GROUP_URL } from "@/lib/apiEndPoint";
 import { clearCache } from "@/actions/common";
+import Image from "next/image";
 
 export default function CreateChat({ user }: { user: CustomUser }) {
   const [open, setOpen] = useState(false);
@@ -71,9 +72,20 @@ export default function CreateChat({ user }: { user: CustomUser }) {
       >
         <div className="h-1 absolute top-0 left-0 right-0 bg-gradient-to-r from-[#c2451e] to-[#a73a18] rounded-t-2xl opacity-80"></div>
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-center text-[#3d1f00]">
-            Create New Group Chat
-          </DialogTitle>
+          <div className="flex flex-col items-center">
+            <div className="relative mb-2">
+              <Image 
+                src="/Logo.png" 
+                alt="Logo" 
+                width={60} 
+                height={50} 
+                className="transition-transform hover:scale-105"
+              />
+            </div>
+            <DialogTitle className="text-2xl font-bold text-center text-[#3d1f00]">
+              Create New Group Chat
+            </DialogTitle>
+          </div>
         </DialogHeader>
         <form
           onSubmit={handleSubmit(onSubmit)}

@@ -2,6 +2,7 @@
 import React, { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { MessageSquare, UserPlus, LockIcon, Zap } from "lucide-react";
+import Image from "next/image";
 
 const features = [
   {
@@ -65,35 +66,6 @@ export default function FeatureSection() {
             </motion.div>
           ))}
         </div>
-        {/* Preview Screenshots */}
-        <motion.div 
-          className="mt-24 relative"
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.4, delay: 0.3 }}
-        >
-          <div className="absolute inset-0 bg-[#c2451e]/5 rounded-2xl transform -skew-y-2"></div>
-          <div className="relative grid grid-cols-1 md:grid-cols-3 gap-8 p-8">
-            {[1, 2, 3].map((item, index) => (
-              <motion.div 
-                key={item}
-                className="bg-white rounded-xl overflow-hidden shadow-md"
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.3, delay: 0.4 + (0.12 * index) }}
-                whileHover={{ scale: 1.03 }}
-              >
-                <div className="h-48 bg-gradient-to-r from-[#c2451e]/20 to-[#a73a18]/20 flex items-center justify-center text-[#c2451e]">
-                  <span className="text-lg font-semibold">Screenshot {item}</span>
-                </div>
-                <div className="p-5">
-                  <h4 className="text-[#3d1f00] font-medium">Feature Preview {item}</h4>
-                  <p className="text-sm text-[#804000] mt-2">Description of the feature in action.</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
       </div>
     </section>
   );

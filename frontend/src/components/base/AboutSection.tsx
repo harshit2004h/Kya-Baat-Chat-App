@@ -37,7 +37,7 @@ export default function AboutSection() {
               <div className="absolute inset-0 bg-[#c2451e]/10 rounded-lg transform rotate-3"></div>
               <div className="relative bg-white/80 p-2 rounded-lg shadow-md border border-[#c2451e]/20">
                 <Image
-                  src="/about-image.png"
+                  src="/images/about.png"
                   alt="About Kya Baat"
                   width={600}
                   height={400}

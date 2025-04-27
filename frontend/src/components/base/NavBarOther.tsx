@@ -67,35 +67,6 @@ export default function Navbar({ user }: { user?: CustomUser }) {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             <motion.div
-              className="flex space-x-6 text-[#3d1f00]"
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.1 }}
-            >
-              <a
-                href="#features"
-                onClick={(e) => handleNavClick(e, "features")}
-                className="hover:text-[#c2451e] transition-colors"
-              >
-                Features
-              </a>
-              <a
-                href="#testimonials"
-                onClick={(e) => handleNavClick(e, "testimonials")}
-                className="hover:text-[#c2451e] transition-colors"
-              >
-                Testimonials
-              </a>
-              <a
-                href="#about"
-                onClick={(e) => handleNavClick(e, "about")}
-                className="hover:text-[#c2451e] transition-colors"
-              >
-                About
-              </a>
-            </motion.div>
-
-            <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.2 }}

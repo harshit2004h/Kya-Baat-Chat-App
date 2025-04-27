@@ -25,15 +25,15 @@ export default async function LandingPage() {
       <div className="fixed bottom-0 right-0 pointer-events-none rotate-180 opacity-40 z-10">
         <DesiDecoration type="corner" />
       </div>
-      
+
       {/* Header */}
       <Navbar user={session?.user} />
-      
+
       {/* Top border decoration */}
       <DesiDecoration type="border" className="w-full" />
-      
+
       {/* Hero Section */}
-      <HeroSection />
+      <HeroSection user={session?.user} />
 
       {/* Features Section */}
       <FeatureSection />
@@ -46,7 +46,7 @@ export default async function LandingPage() {
 
       {/* Bottom border decoration */}
       <DesiDecoration type="border" className="w-full transform rotate-180" />
-      
+
       {/* Footer */}
       <Footer />
     </div>
