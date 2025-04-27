@@ -8,7 +8,7 @@ import { Server } from "socket.io";
 import { createServer } from "http";
 import { setupSocket } from "./socket.js";
 import { createAdapter } from "@socket.io/redis-streams-adapter";
-import redis from "./config/redis.config.js";
+import client from "./config/redis.config.js";
 import { instrument } from "@socket.io/admin-ui";
 import {
   connectKafkaProducer,
@@ -21,10 +21,15 @@ import { consumeMessages } from "./helper.kafka.js";
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:3000", "https://admin.socket.io"],
+    origin: [
+      "http://localhost:3000",
+      "https://admin.socket.io",
+      "https://kya-baat-quickchat.vercel.app",
+      "https://kya-baat-quickchat.vercel.app.socket.io",
+    ],
     credentials: true,
   },
-  adapter: createAdapter(redis),
+  adapter: createAdapter(client),
 });
 
 instrument(io, {
@@ -79,7 +84,6 @@ const gracefulShutdown = async () => {
   try {
     console.log("Shutting down gracefully...");
     await io.close();
-    await redis.quit();
     try {
       await producer.disconnect();
     } catch (e) {}

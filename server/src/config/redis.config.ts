@@ -1,7 +1,12 @@
-import { Redis } from "ioredis";
-const redis = new Redis({
-  host: "localhost",
-  port: 6379,
+import { createClient } from "redis"
+
+const client = createClient ({
+  url : "rediss://default:AUP6AAIjcDExYjhmZTA0N2E5NWY0Y2M3OTdiYjU3MWExM2E0MDljOXAxMA@cosmic-seahorse-17402.upstash.io:6379"
 });
 
-export default redis;
+client.on("error", function(err) {
+  throw err;
+});
+await client.connect()
+await client.set('foo','bar');
+export default client;
